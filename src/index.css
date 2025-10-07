@@ -4,42 +4,121 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900 antialiased;
+    @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased transition-colors duration-200;
+  }
+
+  h1 {
+    @apply text-4xl font-bold tracking-tight text-gray-900 dark:text-white;
+  }
+
+  h2 {
+    @apply text-3xl font-semibold tracking-tight text-gray-900 dark:text-white;
+  }
+
+  h3 {
+    @apply text-2xl font-semibold text-gray-900 dark:text-white;
+  }
+
+  p {
+    @apply text-gray-700 dark:text-gray-300 leading-relaxed;
   }
 }
 
 @layer components {
-  /* Botón primario */
   .btn-primary {
-    @apply bg-primary-500 hover:bg-primary-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+    @apply bg-primary-600 hover:bg-primary-700 active:bg-primary-800 
+           text-white font-semibold py-3 px-6 rounded-xl 
+           transition-all duration-200 shadow-md hover:shadow-lg 
+           transform hover:-translate-y-0.5 active:translate-y-0;
   }
 
-  /* Botón secundario */
   .btn-secondary {
-    @apply bg-gray-200 hover:bg-gray-300 text-gray-900 font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+    @apply bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600
+           text-primary-700 dark:text-primary-400 font-semibold py-3 px-6 rounded-xl 
+           border-2 border-primary-600 dark:border-primary-500 transition-all duration-200 
+           shadow-sm hover:shadow-md;
   }
 
-  /* Card base */
   .card {
-    @apply bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200;
+    @apply bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 
+           hover:shadow-xl transition-all duration-300 
+           border border-gray-100 dark:border-gray-700;
   }
 
-  /* Input base */
+  .card-hover {
+    @apply card hover:scale-105 hover:-translate-y-1 cursor-pointer;
+  }
+
   .input {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200;
+    @apply w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl 
+           bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100
+           focus:ring-4 focus:ring-primary-100 dark:focus:ring-primary-900 focus:border-primary-500 
+           transition-all duration-200 outline-none
+           placeholder:text-gray-400 dark:placeholder:text-gray-500;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  }
+
+  .badge-primary {
+    @apply badge bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200;
+  }
+
+  .badge-success {
+    @apply badge bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200;
+  }
+
+  .badge-warning {
+    @apply badge bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200;
+  }
+
+  .badge-gray {
+    @apply badge bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200;
   }
 }
 
-/* Animaciones personalizadas */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
   }
-  to {
-    opacity: 1;
+
+  .animate-fadeIn {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .animate-slideUp {
+    animation: slideUp 0.4s ease-out;
+  }
+
+  .animate-scaleIn {
+    animation: scaleIn 0.3s ease-out;
   }
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.3s ease-in-out;
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-800;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-gray-600 rounded-full hover:bg-gray-400 dark:hover:bg-gray-500;
+}
+
+/* Animaciones smooth para transiciones de página */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    scroll-behavior: smooth;
+  }
+}
+
+/* REFACTOR SUGGESTIONS:
+ * 1. Considerar agregar más variantes de badges (info, danger)
+ * 2. Implementar skeleton loaders como utility classes
+ * 3. Agregar transiciones más suaves entre temas si se nota parpadeo
+ */
