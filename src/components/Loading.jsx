@@ -11,8 +11,3 @@ function Loading({ message = 'Cargando...' }) {
 }
 
 export default Loading
-
-// REFACTOR SUGGESTIONS:
-// 1. Agregar variantes de tamaño (small, medium, large)
-// 2. Considerar implementar skeleton loaders para mejor UX
-// 3. Agregar prop para cambiar color del spinner si es necesario

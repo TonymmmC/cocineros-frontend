@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Clock, Leaf } from 'lucide-react'
 import { productoService } from '../api/services'
 import Loading from '../components/Loading'
+import { getProductImageUrl } from '../utils/images'
 
 function ProductosPage() {
   const { data, isLoading, error } = useQuery({
@@ -21,7 +22,7 @@ function ProductosPage() {
             Error al cargar productos
           </h3>
           <p className="text-red-600 dark:text-red-300 mb-4">{error.message}</p>
-          <button 
+          <button
             onClick={() => window.location.reload()}
             className="btn-primary"
           >
@@ -46,7 +47,7 @@ function ProductosPage() {
             {productos.length} {productos.length === 1 ? 'producto' : 'productos'} encontrados
           </p>
         </div>
-        
+
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {productos.map((producto) => (
@@ -74,15 +75,21 @@ function ProductosPage() {
 }
 
 function ProductCard({ producto }) {
+  const imagenUrl = getProductImageUrl(producto.primera_imagen)
+
   return (
     <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 p-6 group cursor-pointer">
       {/* Image Placeholder */}
       <div className="w-full h-48 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/30 dark:to-primary-800/30 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
-        {producto.primera_imagen ? (
-          <img 
-            src={producto.primera_imagen} 
+        {imagenUrl ? (
+          <img
+            src={imagenUrl}
             alt={producto.nombre}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.parentElement.innerHTML = '<svg class="w-16 h-16 text-primary-300 dark:text-primary-700" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+            }}
           />
         ) : (
           <Clock className="w-16 h-16 text-primary-300 dark:text-primary-700" />
@@ -144,9 +151,3 @@ function ProductCard({ producto }) {
 }
 
 export default ProductosPage
-
-// REFACTOR SUGGESTIONS:
-// 1. Implementar filtros por categoría y características dietéticas
-// 2. Agregar paginación o infinite scroll para grandes cantidades de productos
-// 3. Crear modal de detalle de producto al hacer click en el card
-// 4. Implementar sistema de favoritos/wishlist

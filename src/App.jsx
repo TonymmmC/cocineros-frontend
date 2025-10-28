@@ -3,19 +3,33 @@ import Navbar from './components/Navbar'
 import HomePage from './pages/HomePage'
 import ProductosPage from './pages/ProductosPage'
 import LoginPage from './pages/LoginPage'
-import ApiTestPage from './pages/ApiTestPage'
+import CocinerosPage from './pages/CocinerosPage'
+import CocineroPerfilPage from './pages/CocineroPerfilPage'
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home')
+  const [selectedCocineroId, setSelectedCocineroId] = useState(null)
+
+  const handleNavigate = (page, cocineroId = null) => {
+    setCurrentPage(page)
+    setSelectedCocineroId(cocineroId)
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Navbar currentPage={currentPage} onNavigate={setCurrentPage} />
-      
-      {currentPage === 'home' && <HomePage onNavigate={setCurrentPage} />}
+      <Navbar currentPage={currentPage} onNavigate={handleNavigate} />
+
+      {currentPage === 'home' && <HomePage onNavigate={handleNavigate} />}
       {currentPage === 'productos' && <ProductosPage />}
-      {currentPage === 'login' && <LoginPage onNavigate={setCurrentPage} />}
-      {currentPage === 'register' && <RegisterPlaceholder onNavigate={setCurrentPage} />}
+      {currentPage === 'cocineros' && <CocinerosPage onNavigate={handleNavigate} />}
+      {currentPage === 'cocinero-perfil' && selectedCocineroId && (
+        <CocineroPerfilPage
+          cocineroId={selectedCocineroId}
+          onNavigate={handleNavigate}
+        />
+      )}
+      {currentPage === 'login' && <LoginPage onNavigate={handleNavigate} />}
+      {currentPage === 'register' && <RegisterPlaceholder onNavigate={handleNavigate} />}
     </div>
   )
 }
@@ -27,7 +41,7 @@ function RegisterPlaceholder({ onNavigate }) {
         <div className="max-w-md mx-auto card">
           <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Registro</h2>
           <p className="text-gray-600 dark:text-gray-400 mb-4">Próximamente: Formulario de registro</p>
-          <button 
+          <button
             onClick={() => onNavigate('login')}
             className="btn-secondary"
           >
@@ -40,9 +54,3 @@ function RegisterPlaceholder({ onNavigate }) {
 }
 
 export default App
-
-// REFACTOR SUGGESTIONS:
-// 1. Implementar React Router para rutas reales en lugar de estado
-// 2. Crear página de Register real conectada al backend
-// 3. Agregar layout component para evitar repetir Navbar
-// 4. Implementar context para autenticación global

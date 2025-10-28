@@ -168,17 +168,9 @@ function LoginPage({ onNavigate }) {
             </p>
           </div>
         </div>
-
-
       </div>
     </div>
   )
 }
 
 export default LoginPage
-
-// REFACTOR SUGGESTIONS:
-// 1. Implementar validación de formulario con biblioteca como react-hook-form
-// 2. Agregar recuperación de contraseña funcional
-// 3. Implementar OAuth (Google, Facebook) si el backend lo soporta
-// 4. Agregar rate limiting visual después de múltiples intentos fallidos
