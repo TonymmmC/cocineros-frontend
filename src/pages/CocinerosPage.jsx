@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { cocineroService } from '../api/services';
 import Loading from '../components/Loading';
 import DebugPanel from '../components/DebugPanel';
-import { ChefHat, Star, MapPin, Clock, AlertCircle } from 'lucide-react';
+import { ChefHat, Star, MapPin, Clock, AlertCircle, Award } from 'lucide-react';
 import { getChefImageUrl } from '../utils/images';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -59,10 +59,10 @@ export default function CocinerosPage({ onNavigate }) {
                 <Card
                   key={cocinero.id}
                   onClick={() => onNavigate('cocinero-perfil', cocinero.id)}
-                  className="overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer"
+                  className="overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer border-2 hover:border-primary/50"
                 >
                   {/* Imagen del Cocinero */}
-                  <div className="relative h-48 bg-gradient-to-br from-primary/20 to-primary/5 overflow-hidden">
+                  <div className="relative h-56 bg-gradient-to-br from-primary/10 to-primary/5 overflow-hidden">
                     <img
                       src={fotoUrl}
                       alt={cocinero.nombre_completo || cocinero.user?.name || 'Cocinero'}
@@ -75,24 +75,24 @@ export default function CocinerosPage({ onNavigate }) {
                     {/* Badge de disponibilidad */}
                     <div className="absolute top-4 right-4">
                       {cocinero.esta_disponible ? (
-                        <Badge className="bg-green-500 hover:bg-green-600">
-                          Disponible
+                        <Badge className="bg-green-500 hover:bg-green-600 shadow-lg">
+                          ● Disponible
                         </Badge>
                       ) : (
-                        <Badge variant="secondary">
-                          No disponible
+                        <Badge variant="secondary" className="shadow-lg">
+                          ○ No disponible
                         </Badge>
                       )}
                     </div>
                   </div>
 
                   {/* Información del Cocinero */}
-                  <CardHeader>
-                    <CardTitle className="group-hover:text-primary transition-colors">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="line-clamp-1 group-hover:text-primary transition-colors">
                       {cocinero.nombre_completo || cocinero.user?.name || 'Cocinero'}
                     </CardTitle>
                     {cocinero.especialidades && cocinero.especialidades.length > 0 && (
-                      <CardDescription className="font-medium">
+                      <CardDescription className="line-clamp-1 font-medium text-primary/80">
                         {Array.isArray(cocinero.especialidades)
                           ? cocinero.especialidades.join(', ')
                           : cocinero.especialidades}
@@ -101,43 +101,49 @@ export default function CocinerosPage({ onNavigate }) {
                   </CardHeader>
 
                   <CardContent className="space-y-4">
+                    {/* Bio */}
                     {cocinero.bio && (
-                      <p className="text-sm text-muted-foreground line-clamp-2">
+                      <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
                         {cocinero.bio}
                       </p>
                     )}
 
-                    {/* Stats */}
-                    <div className="flex items-center gap-4 text-sm">
+                    {/* Stats Row */}
+                    <div className="flex items-center justify-between pt-2 border-t">
+                      {/* Rating */}
                       {cocinero.calificacion_promedio && (
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-1.5">
                           <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                          <span className="font-medium">
+                          <span className="font-bold text-lg">
                             {parseFloat(cocinero.calificacion_promedio).toFixed(1)}
                           </span>
                         </div>
                       )}
 
+                      {/* Pedidos */}
                       {cocinero.total_pedidos > 0 && (
-                        <div className="flex items-center gap-1 text-muted-foreground">
-                          <Clock className="w-4 h-4" />
-                          <span>{cocinero.total_pedidos} pedidos</span>
+                        <div className="flex items-center gap-1.5 text-muted-foreground">
+                          <Award className="w-4 h-4" />
+                          <span className="text-sm font-medium">{cocinero.total_pedidos} pedidos</span>
                         </div>
                       )}
                     </div>
 
+                    {/* Location */}
                     {cocinero.direccion && (
-                      <div className="flex items-start gap-2 text-sm text-muted-foreground">
-                        <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      <div className="flex items-start gap-2 text-sm text-muted-foreground bg-muted/50 p-2 rounded-md">
+                        <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0 text-primary" />
                         <span className="line-clamp-1">{cocinero.direccion}</span>
                       </div>
                     )}
 
-                    {/* Ver productos link */}
-                    <div className="pt-4 border-t">
-                      <span className="text-sm font-medium text-primary group-hover:underline">
-                        Ver productos →
-                      </span>
+                    {/* Ver productos button */}
+                    <div className="pt-2">
+                      <div className="w-full text-center py-2 px-4 bg-primary/5 hover:bg-primary/10 rounded-md transition-colors">
+                        <span className="text-sm font-semibold text-primary">
+                          Ver productos →
+                        </span>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
