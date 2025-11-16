@@ -7,6 +7,7 @@ import { getChefImageUrl } from '../utils/images';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
 
 export default function CocinerosPage({ onNavigate }) {
   const { data: response, isLoading, error } = useQuery({
@@ -58,98 +59,91 @@ export default function CocinerosPage({ onNavigate }) {
                 <Card
                   key={cocinero.id}
                   onClick={() => onNavigate('cocinero-perfil', cocinero.id)}
-                  className="group overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-border/50"
+                  className="group cursor-pointer transition-all duration-200 hover:shadow-lg"
                 >
-                  {/* Imagen con overlay mejorado */}
-                  <div className="relative h-64 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent z-10" />
-                    <img
-                      src={fotoUrl}
-                      alt={cocinero.nombre_completo || cocinero.user?.name || 'Cocinero'}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      onError={(e) => {
-                        e.target.src = getChefImageUrl(null);
-                      }}
-                    />
+                  <CardContent className="p-4">
+                    {/* Imagen con padding y bordes redondeados */}
+                    <div className="relative mb-4">
+                      <img
+                        src={fotoUrl}
+                        alt={cocinero.nombre_completo || cocinero.user?.name || 'Cocinero'}
+                        className="w-full h-48 object-cover rounded-lg"
+                        onError={(e) => {
+                          e.target.src = getChefImageUrl(null);
+                        }}
+                      />
 
-                    {/* Badge de disponibilidad mejorado */}
-                    <div className="absolute top-4 right-4 z-20">
-                      {cocinero.esta_disponible ? (
-                        <Badge className="bg-green-500 hover:bg-green-600 shadow-lg backdrop-blur-sm">
-                          <span className="relative flex h-2 w-2 mr-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-300 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-100"></span>
-                          </span>
-                          Disponible
-                        </Badge>
-                      ) : (
-                        <Badge variant="secondary" className="shadow-lg backdrop-blur-sm bg-black/40 text-white">
-                          No disponible
-                        </Badge>
-                      )}
-                    </div>
-
-                    {/* Stats overlay */}
-                    {cocinero.calificacion_promedio && (
-                      <div className="absolute bottom-4 left-4 z-20 flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-2 rounded-full">
-                        <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                        <span className="text-white font-bold text-lg">
-                          {parseFloat(cocinero.calificacion_promedio).toFixed(1)}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Content mejorado */}
-                  <CardHeader className="space-y-3">
-                    <CardTitle className="text-xl group-hover:text-primary transition-colors">
-                      {cocinero.nombre_completo || cocinero.user?.name || 'Cocinero'}
-                    </CardTitle>
-                    {cocinero.especialidades && cocinero.especialidades.length > 0 && (
-                      <div className="flex flex-wrap gap-2">
-                        {(Array.isArray(cocinero.especialidades)
-                          ? cocinero.especialidades
-                          : cocinero.especialidades.split(',')).slice(0, 3).map((esp, idx) => (
-                          <Badge key={idx} variant="secondary" className="text-xs">
-                            {esp.trim()}
+                      {/* Badge de disponibilidad simple */}
+                      <div className="absolute top-3 right-3">
+                        {cocinero.esta_disponible ? (
+                          <Badge className="bg-green-500 hover:bg-green-600">
+                            Disponible
                           </Badge>
-                        ))}
+                        ) : (
+                          <Badge variant="secondary">
+                            No disponible
+                          </Badge>
+                        )}
                       </div>
-                    )}
-                  </CardHeader>
 
-                  <CardContent className="space-y-4">
-                    {/* Bio */}
-                    {cocinero.bio && (
-                      <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
-                        {cocinero.bio}
-                      </p>
-                    )}
-
-                    {/* Stats */}
-                    <div className="flex items-center justify-between pt-4 border-t">
-                      {cocinero.total_pedidos > 0 && (
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <TrendingUp className="w-4 h-4 text-primary" />
-                          <span className="font-medium">{cocinero.total_pedidos} pedidos</span>
-                        </div>
-                      )}
-
-                      {cocinero.direccion && (
-                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                          <MapPin className="w-3 h-3" />
-                          <span className="line-clamp-1 max-w-[120px]">
-                            {cocinero.direccion.split(',')[0]}
+                      {/* Rating badge */}
+                      {cocinero.calificacion_promedio && (
+                        <div className="absolute bottom-3 left-3 flex items-center gap-1 bg-white px-2 py-1 rounded-md shadow-sm">
+                          <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                          <span className="text-sm font-semibold">
+                            {parseFloat(cocinero.calificacion_promedio).toFixed(1)}
                           </span>
                         </div>
                       )}
                     </div>
 
-                    {/* CTA */}
-                    <div className="pt-2">
-                      <div className="w-full text-center py-2.5 px-4 bg-primary/5 hover:bg-primary hover:text-primary-foreground rounded-lg transition-all duration-300 font-medium text-sm group-hover:bg-primary group-hover:text-primary-foreground">
-                        Ver perfil completo →
+                    {/* Content */}
+                    <div className="space-y-3">
+                      <h3 className="text-lg font-semibold">
+                        {cocinero.nombre_completo || cocinero.user?.name || 'Cocinero'}
+                      </h3>
+
+                      {cocinero.especialidades && cocinero.especialidades.length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                          {(Array.isArray(cocinero.especialidades)
+                            ? cocinero.especialidades
+                            : cocinero.especialidades.split(',')).slice(0, 3).map((esp, idx) => (
+                            <Badge key={idx} variant="secondary" className="text-xs">
+                              {esp.trim()}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+
+                      {cocinero.bio && (
+                        <p className="text-sm text-muted-foreground line-clamp-2">
+                          {cocinero.bio}
+                        </p>
+                      )}
+
+                      {/* Stats */}
+                      <div className="flex items-center justify-between pt-2 border-t">
+                        {cocinero.total_pedidos > 0 && (
+                          <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                            <TrendingUp className="w-4 h-4 text-primary" />
+                            <span>{cocinero.total_pedidos} pedidos</span>
+                          </div>
+                        )}
+
+                        {cocinero.direccion && (
+                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                            <MapPin className="w-3 h-3" />
+                            <span className="line-clamp-1 max-w-[120px]">
+                              {cocinero.direccion.split(',')[0]}
+                            </span>
+                          </div>
+                        )}
                       </div>
+
+                      {/* CTA Button */}
+                      <Button variant="outline" className="w-full mt-2">
+                        Ver perfil completo
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>

@@ -82,73 +82,77 @@ function ProductCard({ producto }) {
   const imagenUrl = getProductImageUrl(producto.primera_imagen)
 
   return (
-    <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer">
-      {/* Image */}
-      <div className="w-full h-48 bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center overflow-hidden">
-        {imagenUrl ? (
-          <img
-            src={imagenUrl}
-            alt={producto.nombre}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-            onError={(e) => {
-              e.target.style.display = 'none';
-              e.target.parentElement.innerHTML = '<svg class="w-16 h-16 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
-            }}
-          />
-        ) : (
-          <Clock className="w-16 h-16 text-muted-foreground" />
-        )}
-      </div>
-
-      {/* Content */}
-      <CardHeader>
-        <CardTitle className="line-clamp-1 group-hover:text-primary transition-colors">
-          {producto.nombre}
-        </CardTitle>
-        <CardDescription className="line-clamp-2">
-          {producto.descripcion}
-        </CardDescription>
-      </CardHeader>
-
-      <CardContent className="space-y-4">
-        {/* Price and Time */}
-        <div className="flex justify-between items-center">
-          <span className="text-2xl font-bold text-primary">
-            Bs. {producto.precio}
-          </span>
-          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            <Clock className="w-4 h-4" />
-            <span>{producto.tiempo_preparacion_min} min</span>
+    <Card className="cursor-pointer transition-all duration-200 hover:shadow-lg">
+      <CardContent className="p-4">
+        {/* Image con padding y bordes redondeados */}
+        <div className="relative mb-4">
+          <div className="w-full h-48 bg-gradient-to-br from-primary/5 to-primary/10 flex items-center justify-center rounded-lg overflow-hidden">
+            {imagenUrl ? (
+              <img
+                src={imagenUrl}
+                alt={producto.nombre}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.parentElement.innerHTML = '<svg class="w-16 h-16 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+                }}
+              />
+            ) : (
+              <Clock className="w-16 h-16 text-muted-foreground" />
+            )}
           </div>
         </div>
 
-        {/* Badges */}
-        <div className="flex flex-wrap gap-2">
-          {producto.categoria?.nombre && (
-            <Badge variant="default">
-              {producto.categoria.nombre}
-            </Badge>
-          )}
+        {/* Content */}
+        <div className="space-y-3">
+          <div>
+            <h3 className="text-lg font-semibold line-clamp-1">
+              {producto.nombre}
+            </h3>
+            <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
+              {producto.descripcion}
+            </p>
+          </div>
 
-          {producto.es_vegetariano && (
-            <Badge variant="secondary" className="gap-1">
-              <Leaf className="w-3 h-3" />
-              Vegetariano
-            </Badge>
-          )}
+          {/* Price and Time */}
+          <div className="flex justify-between items-center pt-2 border-t">
+            <span className="text-2xl font-bold text-primary">
+              Bs. {producto.precio}
+            </span>
+            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+              <Clock className="w-4 h-4" />
+              <span>{producto.tiempo_preparacion_min} min</span>
+            </div>
+          </div>
 
-          {producto.es_vegano && (
-            <Badge variant="secondary" className="gap-1">
-              <Leaf className="w-3 h-3" />
-              Vegano
-            </Badge>
-          )}
+          {/* Badges */}
+          <div className="flex flex-wrap gap-2">
+            {producto.categoria?.nombre && (
+              <Badge variant="default">
+                {producto.categoria.nombre}
+              </Badge>
+            )}
 
-          {producto.es_sin_gluten && (
-            <Badge variant="outline">
-              Sin Gluten
-            </Badge>
-          )}
+            {producto.es_vegetariano && (
+              <Badge variant="secondary" className="gap-1">
+                <Leaf className="w-3 h-3" />
+                Vegetariano
+              </Badge>
+            )}
+
+            {producto.es_vegano && (
+              <Badge variant="secondary" className="gap-1">
+                <Leaf className="w-3 h-3" />
+                Vegano
+              </Badge>
+            )}
+
+            {producto.es_sin_gluten && (
+              <Badge variant="outline">
+                Sin Gluten
+              </Badge>
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>
