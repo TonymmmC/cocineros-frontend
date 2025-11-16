@@ -64,6 +64,14 @@ export const API_ENDPOINTS = {
   // Categorías
   CATEGORIAS: '/categorias',
   CATEGORIA_BY_ID: (id: number) => `/categorias/${id}`,
+
+  // Pedidos (NUEVOS - Agregados por C1)
+  PEDIDOS: '/pedidos',
+  MIS_PEDIDOS: '/mis-pedidos',
+  PEDIDOS_RECIBIDOS: '/pedidos-recibidos',
+  PEDIDO_BY_ID: (id: number) => `/pedidos/${id}`,
+  PEDIDO_CAMBIAR_ESTADO: (id: number) => `/pedidos/${id}/estado`,
+  PEDIDO_CANCELAR: (id: number) => `/pedidos/${id}/cancelar`,
 } as const
 
 // ============================================================================
@@ -88,6 +96,11 @@ export const QUERY_KEYS = {
   // Categorías
   CATEGORIAS: ['categorias'] as const,
   CATEGORIA: (id: number) => ['categoria', id] as const,
+
+  // Pedidos (NUEVOS)
+  MIS_PEDIDOS: ['mis-pedidos'] as const,
+  PEDIDOS_RECIBIDOS: ['pedidos-recibidos'] as const,
+  PEDIDO: (id: number) => ['pedido', id] as const,
 } as const
 
 // ============================================================================

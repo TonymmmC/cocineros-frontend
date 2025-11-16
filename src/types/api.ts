@@ -243,3 +243,76 @@ export interface PaginatedResponse<T> {
     next: string | null
   }
 }
+
+// ============================================================================
+// PEDIDOS (NUEVOS ENDPOINTS - Agregados por C1)
+// ============================================================================
+
+export type EstadoPedido =
+  | 'pendiente'
+  | 'confirmado'
+  | 'preparando'
+  | 'listo'
+  | 'en_camino'
+  | 'entregado'
+  | 'cancelado'
+
+export interface DetallePedido {
+  id: number
+  producto_id: number
+  producto: Producto
+  cantidad: number
+  precio_unitario: number
+  subtotal: number
+  notas?: string | null
+}
+
+export interface Pedido {
+  id: number
+  cliente_id: number
+  cocinero_id: number
+  estado: EstadoPedido
+  total: number
+  total_formateado: string
+  direccion_entrega: string
+  latitud: number | null
+  longitud: number | null
+  notas?: string | null
+  fecha_entrega_estimada?: string | null
+  fecha_entregado?: string | null
+  cliente: User
+  cocinero: Cocinero
+  detalles: DetallePedido[]
+  // Helpers
+  puede_cancelar: boolean
+  esta_activo: boolean
+  esta_completado: boolean
+  esta_cancelado: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface CreatePedidoRequest {
+  cocinero_id: number
+  direccion_entrega: string
+  latitud?: number | null
+  longitud?: number | null
+  notas?: string | null
+  detalles: Array<{
+    producto_id: number
+    cantidad: number
+    notas?: string | null
+  }>
+}
+
+export interface UpdateEstadoPedidoRequest {
+  estado: EstadoPedido
+}
+
+export interface PedidosResponse {
+  data: Pedido[]
+}
+
+export interface PedidoResponse {
+  data: Pedido
+}

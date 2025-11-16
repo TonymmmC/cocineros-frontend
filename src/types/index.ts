@@ -34,6 +34,15 @@ export type {
   CreateProductoRequest,
   UpdateProductoRequest,
 
+  // Pedidos
+  Pedido,
+  DetallePedido,
+  EstadoPedido,
+  PedidosResponse,
+  PedidoResponse,
+  CreatePedidoRequest,
+  UpdateEstadoPedidoRequest,
+
   // Errors
   ApiError,
   ApiErrorResponse,

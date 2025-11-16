@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { cocineroService } from '../api/services';
 import Loading from '../components/Loading';
+import ErrorDisplay from '../components/ErrorDisplay';
 import DebugPanel from '../components/DebugPanel';
 import { ChefHat, Star, MapPin, Clock } from 'lucide-react';
 import { getChefImageUrl } from '../utils/images';
 
 export default function CocinerosPage({ onNavigate }) {
-  const { data: response, isLoading, error } = useQuery({
+  const { data: response, isLoading, error, refetch } = useQuery({
     queryKey: ['cocineros'],
     queryFn: () => cocineroService.getAll({ per_page: 50 }),
   });
@@ -16,17 +17,7 @@ export default function CocinerosPage({ onNavigate }) {
   if (isLoading) return <Loading />;
 
   if (error) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-            <p className="text-red-800 dark:text-red-200">
-              Error al cargar los cocineros: {error.message}
-            </p>
-          </div>
-        </div>
-      </div>
-    );
+    return <ErrorDisplay error={error} onRetry={refetch} context="cocineros" />;
   }
 
   return (

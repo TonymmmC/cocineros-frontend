@@ -9,9 +9,11 @@ export { authService } from './auth.service'
 export { cocinerosService } from './cocineros.service'
 export { productosService } from './productos.service'
 export { categoriasService } from './categorias.service'
+export { pedidosService } from './pedidos.service'
 
 // Re-exportar para compatibilidad con código legacy
 export { authService as default } from './auth.service'
 export { cocinerosService as cocineroService } from './cocineros.service'
 export { productosService as productoService } from './productos.service'
 export { categoriasService as categoriaService } from './categorias.service'
+export { pedidosService as pedidoService } from './pedidos.service'

@@ -2,10 +2,11 @@ import { useQuery } from '@tanstack/react-query'
 import { Clock, Leaf } from 'lucide-react'
 import { productoService } from '../api/services'
 import Loading from '../components/Loading'
+import ErrorDisplay from '../components/ErrorDisplay'
 import { getProductImageUrl } from '../utils/images'
 
 function ProductosPage() {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['productos'],
     queryFn: () => productoService.getAll(),
   })
@@ -15,22 +16,7 @@ function ProductosPage() {
   }
 
   if (error) {
-    return (
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-md mx-auto bg-red-50 dark:bg-red-900/20 rounded-2xl shadow-lg p-6 border-2 border-red-200 dark:border-red-800">
-          <h3 className="text-xl font-semibold text-red-700 dark:text-red-400 mb-2">
-            Error al cargar productos
-          </h3>
-          <p className="text-red-600 dark:text-red-300 mb-4">{error.message}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="btn-primary"
-          >
-            Reintentar
-          </button>
-        </div>
-      </div>
-    )
+    return <ErrorDisplay error={error} onRetry={refetch} context="productos" />
   }
 
   const productos = data?.data || []
