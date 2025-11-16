@@ -135,3 +135,16 @@
     text-wrap: balance;
   }
 }
+
+/* PRUEBA CRÍTICA - ESTO FUERZA EL NARANJA */
+body {
+  background-color: #FF6B35 !important;
+}
+
+html {
+  background-color: #FF6B35 !important;
+}
+
+#root {
+  background-color: #FF6B35 !important;
+}
