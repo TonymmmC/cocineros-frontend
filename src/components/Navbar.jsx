@@ -23,8 +23,8 @@ function Navbar({ currentPage, onNavigate }) {
           className="flex items-center space-x-2 mr-6"
         >
           <ChefHat className="h-6 w-6 text-primary" strokeWidth={2.5} />
-          <span className="hidden font-bold sm:inline-block text-3xl">
-            🔥 PRUEBA 🔥
+          <span className="hidden font-bold sm:inline-block">
+            Cocineros
           </span>
         </button>
 
