@@ -1,18 +1,30 @@
-import { ShoppingBag, Home, ChefHat, Menu, X, Sun, Moon } from 'lucide-react'
+import { ShoppingBag, Home, ChefHat, Menu, X, Sun, Moon, Package, UtensilsCrossed } from 'lucide-react'
 import { useState } from 'react'
 import { useTheme } from '../hooks/useTheme'
+import { useAuth } from '../hooks/useAuth'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { CartSheet } from '@/components/cart/CartSheet'
 
 function Navbar({ currentPage, onNavigate }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { theme, toggleTheme } = useTheme()
+  const { isAuthenticated, isCliente, isCocinero } = useAuth()
 
   const navItems = [
     { id: 'home', label: 'Inicio', icon: Home },
     { id: 'cocineros', label: 'Cocineros', icon: ChefHat },
     { id: 'productos', label: 'Productos', icon: ShoppingBag },
   ]
+
+  // Agregar items adicionales para usuarios autenticados
+  if (isAuthenticated && isCliente) {
+    navItems.push({ id: 'mis-pedidos', label: 'Mis Pedidos', icon: Package })
+  }
+
+  if (isAuthenticated && isCocinero) {
+    navItems.push({ id: 'chef-dashboard', label: 'Panel Cocinero', icon: UtensilsCrossed })
+  }
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -53,6 +65,8 @@ function Navbar({ currentPage, onNavigate }) {
 
           {/* Right Actions */}
           <div className="flex items-center gap-2">
+            {isAuthenticated && isCliente && <CartSheet />}
+
             <Button
               variant="ghost"
               size="icon"
@@ -66,14 +80,26 @@ function Navbar({ currentPage, onNavigate }) {
               )}
             </Button>
 
-            <Button onClick={() => onNavigate('login')}>
-              Ingresar
-            </Button>
+            {isAuthenticated ? (
+              <Button variant="outline" onClick={() => {
+                localStorage.removeItem('auth_token')
+                localStorage.removeItem('auth_user')
+                window.location.reload()
+              }}>
+                Salir
+              </Button>
+            ) : (
+              <Button onClick={() => onNavigate('login')}>
+                Ingresar
+              </Button>
+            )}
           </div>
         </div>
 
         {/* Mobile Actions */}
         <div className="flex flex-1 items-center justify-end md:hidden">
+          {isAuthenticated && isCliente && <CartSheet />}
+
           <Button
             variant="ghost"
             size="icon"
@@ -128,15 +154,29 @@ function Navbar({ currentPage, onNavigate }) {
             })}
 
             <div className="pt-2 mt-2 border-t">
-              <Button
-                className="w-full"
-                onClick={() => {
-                  onNavigate('login')
-                  setMobileMenuOpen(false)
-                }}
-              >
-                Ingresar
-              </Button>
+              {isAuthenticated ? (
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    localStorage.removeItem('auth_token')
+                    localStorage.removeItem('auth_user')
+                    window.location.reload()
+                  }}
+                >
+                  Salir
+                </Button>
+              ) : (
+                <Button
+                  className="w-full"
+                  onClick={() => {
+                    onNavigate('login')
+                    setMobileMenuOpen(false)
+                  }}
+                >
+                  Ingresar
+                </Button>
+              )}
             </div>
           </nav>
         </div>

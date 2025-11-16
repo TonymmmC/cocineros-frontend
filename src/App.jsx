@@ -5,8 +5,11 @@ import ProductosPage from './pages/ProductosPage'
 import LoginPage from './pages/LoginPage'
 import CocinerosPage from './pages/CocinerosPage'
 import CocineroPerfilPage from './pages/CocineroPerfilPage'
+import OrdersPage from './pages/OrdersPage'
+import ChefDashboard from './pages/ChefDashboard'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Toaster } from '@/components/ui/toaster'
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home')
@@ -32,6 +35,10 @@ function App() {
       )}
       {currentPage === 'login' && <LoginPage onNavigate={handleNavigate} />}
       {currentPage === 'register' && <RegisterPlaceholder onNavigate={handleNavigate} />}
+      {currentPage === 'mis-pedidos' && <OrdersPage />}
+      {currentPage === 'chef-dashboard' && <ChefDashboard />}
+
+      <Toaster />
     </div>
   )
 }
