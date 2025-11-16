@@ -1,6 +1,8 @@
 import { ShoppingBag, Home, ChefHat, Menu, X, Sun, Moon } from 'lucide-react'
 import { useState } from 'react'
 import { useTheme } from '../hooks/useTheme'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 function Navbar({ currentPage, onNavigate }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -13,126 +15,132 @@ function Navbar({ currentPage, onNavigate }) {
   ]
 
   return (
-    <nav className="bg-white dark:bg-gray-900 sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <button
-            onClick={() => onNavigate('home')}
-            className="flex items-center space-x-2 group"
-          >
-            <ChefHat className="w-7 h-7 text-primary-600 dark:text-primary-500" strokeWidth={2} />
-            <span className="text-xl font-semibold text-gray-900 dark:text-white">Cocineros</span>
-          </button>
+    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 items-center">
+        {/* Logo */}
+        <button
+          onClick={() => onNavigate('home')}
+          className="flex items-center space-x-2 mr-6"
+        >
+          <ChefHat className="h-6 w-6 text-primary" strokeWidth={2.5} />
+          <span className="hidden font-bold sm:inline-block">
+            Cocineros
+          </span>
+        </button>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex md:flex-1 md:items-center md:justify-between">
+          <nav className="flex items-center space-x-6">
             {navItems.map((item) => {
+              const Icon = item.icon
               const isActive = currentPage === item.id
 
               return (
                 <button
                   key={item.id}
                   onClick={() => onNavigate(item.id)}
-                  className={`text-sm font-medium transition-colors ${
-                    isActive
-                      ? 'text-primary-600 dark:text-primary-500'
-                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-                  }`}
+                  className={cn(
+                    "flex items-center gap-2 text-sm font-medium transition-colors hover:text-primary",
+                    isActive ? "text-primary" : "text-muted-foreground"
+                  )}
                 >
+                  <Icon className="h-4 w-4" />
                   {item.label}
                 </button>
               )
             })}
-          </div>
+          </nav>
 
           {/* Right Actions */}
-          <div className="hidden md:flex items-center space-x-4">
-            <button
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={toggleTheme}
-              className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
               aria-label="Cambiar tema"
             >
               {theme === 'dark' ? (
-                <Sun className="w-5 h-5" />
+                <Sun className="h-5 w-5" />
               ) : (
-                <Moon className="w-5 h-5" />
+                <Moon className="h-5 w-5" />
               )}
-            </button>
+            </Button>
 
-            <button
-              onClick={() => onNavigate('login')}
-              className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium rounded-md transition-colors"
-            >
+            <Button onClick={() => onNavigate('login')}>
               Ingresar
-            </button>
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-2">
-            <button
-              onClick={toggleTheme}
-              className="p-2 text-gray-600 dark:text-gray-400"
-              aria-label="Cambiar tema"
-            >
-              {theme === 'dark' ? (
-                <Sun className="w-5 h-5" />
-              ) : (
-                <Moon className="w-5 h-5" />
-              )}
-            </button>
-
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-gray-700 dark:text-gray-300"
-            >
-              {mobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
-            </button>
+            </Button>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-200 dark:border-gray-800">
-            <div className="flex flex-col space-y-1">
-              {navItems.map((item) => {
-                const isActive = currentPage === item.id
+        {/* Mobile Actions */}
+        <div className="flex flex-1 items-center justify-end md:hidden">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleTheme}
+            aria-label="Cambiar tema"
+          >
+            {theme === 'dark' ? (
+              <Sun className="h-5 w-5" />
+            ) : (
+              <Moon className="h-5 w-5" />
+            )}
+          </Button>
 
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => {
-                      onNavigate(item.id)
-                      setMobileMenuOpen(false)
-                    }}
-                    className={`px-4 py-3 text-left text-sm font-medium transition-colors ${
-                      isActive
-                        ? 'text-primary-600 dark:text-primary-500 bg-gray-50 dark:bg-gray-800'
-                        : 'text-gray-600 dark:text-gray-400'
-                    }`}
-                  >
-                    {item.label}
-                  </button>
-                )
-              })}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </Button>
+        </div>
+      </div>
 
-              <button
+      {/* Mobile Navigation */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t">
+          <nav className="container grid gap-2 py-4">
+            {navItems.map((item) => {
+              const Icon = item.icon
+              const isActive = currentPage === item.id
+
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    onNavigate(item.id)
+                    setMobileMenuOpen(false)
+                  }}
+                  className={cn(
+                    "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent",
+                    isActive ? "bg-accent text-accent-foreground" : "text-muted-foreground"
+                  )}
+                >
+                  <Icon className="h-4 w-4" />
+                  {item.label}
+                </button>
+              )
+            })}
+
+            <div className="pt-2 mt-2 border-t">
+              <Button
+                className="w-full"
                 onClick={() => {
                   onNavigate('login')
                   setMobileMenuOpen(false)
                 }}
-                className="mx-4 mt-2 px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-md"
               >
                 Ingresar
-              </button>
+              </Button>
             </div>
-          </div>
-        )}
-      </div>
+          </nav>
+        </div>
+      )}
     </nav>
   )
 }
