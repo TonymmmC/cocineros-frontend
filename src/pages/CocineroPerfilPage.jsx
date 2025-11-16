@@ -8,9 +8,14 @@ import {
   ArrowLeft,
   Phone,
   Mail,
-  ShoppingBag
+  ShoppingBag,
+  AlertCircle
 } from 'lucide-react';
 import { getChefImageUrl, getProductImageUrl } from '../utils/images';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export default function CocineroPerfilPage({ cocineroId, onNavigate }) {
   const { data: cocineroResponse, isLoading: loadingCocinero, error: errorCocinero } = useQuery({
@@ -35,20 +40,22 @@ export default function CocineroPerfilPage({ cocineroId, onNavigate }) {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <button
+      <div className="min-h-screen py-12">
+        <div className="container mx-auto px-4">
+          <Button
             onClick={() => onNavigate('cocineros')}
-            className="inline-flex items-center gap-2 text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 mb-6"
+            variant="ghost"
+            className="mb-6"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="mr-2 h-4 w-4" />
             Volver a cocineros
-          </button>
-          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-            <p className="text-red-800 dark:text-red-200">
+          </Button>
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
               Error al cargar el perfil: {error.message}
-            </p>
-          </div>
+            </AlertDescription>
+          </Alert>
         </div>
       </div>
     );
@@ -57,22 +64,23 @@ export default function CocineroPerfilPage({ cocineroId, onNavigate }) {
   const fotoUrl = getChefImageUrl(cocinero?.foto_perfil);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-12">
+      <div className="container mx-auto px-4">
         {/* Botón Volver */}
-        <button
+        <Button
           onClick={() => onNavigate('cocineros')}
-          className="inline-flex items-center gap-2 text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 mb-6 transition-colors"
+          variant="ghost"
+          className="mb-6"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="mr-2 h-4 w-4" />
           Volver a cocineros
-        </button>
+        </Button>
 
         {/* Perfil del Cocinero */}
         {cocinero && (
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-8">
+          <Card className="overflow-hidden mb-8">
             {/* Header con imagen de fondo */}
-            <div className="relative h-64 bg-gradient-to-br from-amber-500 to-orange-600">
+            <div className="relative h-64 bg-gradient-to-br from-primary/20 to-primary/5">
               <img
                 src={fotoUrl}
                 alt={cocinero.nombre_completo || cocinero.user?.name || 'Cocinero'}
@@ -85,27 +93,27 @@ export default function CocineroPerfilPage({ cocineroId, onNavigate }) {
               {/* Badge de disponibilidad */}
               <div className="absolute top-4 right-4">
                 {cocinero.esta_disponible ? (
-                  <span className="bg-green-500 text-white text-sm font-semibold px-4 py-2 rounded-full shadow-lg">
+                  <Badge className="bg-green-500 hover:bg-green-600 text-sm">
                     Disponible ahora
-                  </span>
+                  </Badge>
                 ) : (
-                  <span className="bg-gray-500 text-white text-sm font-semibold px-4 py-2 rounded-full shadow-lg">
+                  <Badge variant="secondary" className="text-sm">
                     No disponible
-                  </span>
+                  </Badge>
                 )}
               </div>
             </div>
 
             {/* Información del Cocinero */}
-            <div className="p-8">
+            <CardContent className="p-8">
               <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
                 <div className="flex-1">
-                  <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                  <h1 className="text-3xl font-bold mb-2">
                     {cocinero.nombre_completo || cocinero.user?.name || 'Cocinero'}
                   </h1>
 
                   {cocinero.especialidades && cocinero.especialidades.length > 0 && (
-                    <p className="text-lg text-amber-600 dark:text-amber-400 font-medium mb-4">
+                    <p className="text-lg text-primary font-medium mb-4">
                       {Array.isArray(cocinero.especialidades)
                         ? cocinero.especialidades.join(', ')
                         : cocinero.especialidades}
@@ -113,7 +121,7 @@ export default function CocineroPerfilPage({ cocineroId, onNavigate }) {
                   )}
 
                   {cocinero.bio && (
-                    <p className="text-gray-600 dark:text-gray-400 mb-6">
+                    <p className="text-muted-foreground mb-6">
                       {cocinero.bio}
                     </p>
                   )}
@@ -121,22 +129,22 @@ export default function CocineroPerfilPage({ cocineroId, onNavigate }) {
                   {/* Información de contacto */}
                   <div className="space-y-3 mb-6">
                     {cocinero.user?.email && (
-                      <div className="flex items-center gap-3 text-gray-700 dark:text-gray-300">
-                        <Mail className="w-5 h-5 text-amber-500" />
+                      <div className="flex items-center gap-3">
+                        <Mail className="w-5 h-5 text-primary" />
                         <span>{cocinero.user.email}</span>
                       </div>
                     )}
 
                     {cocinero.user?.phone && (
-                      <div className="flex items-center gap-3 text-gray-700 dark:text-gray-300">
-                        <Phone className="w-5 h-5 text-amber-500" />
+                      <div className="flex items-center gap-3">
+                        <Phone className="w-5 h-5 text-primary" />
                         <span>{cocinero.user.phone}</span>
                       </div>
                     )}
 
                     {cocinero.direccion && (
-                      <div className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
-                        <MapPin className="w-5 h-5 text-amber-500 mt-0.5 flex-shrink-0" />
+                      <div className="flex items-start gap-3">
+                        <MapPin className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                         <span>{cocinero.direccion}</span>
                       </div>
                     )}
@@ -144,18 +152,20 @@ export default function CocineroPerfilPage({ cocineroId, onNavigate }) {
                 </div>
 
                 {/* Stats Card */}
-                <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-6 md:w-64">
-                  <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase mb-4">
-                    Estadísticas
-                  </h3>
-                  <div className="space-y-4">
+                <Card className="md:w-64 bg-muted/50">
+                  <CardHeader>
+                    <CardTitle className="text-sm font-semibold uppercase text-muted-foreground">
+                      Estadísticas
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
                     {cocinero.calificacion_promedio && (
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
-                          <span className="text-gray-600 dark:text-gray-400">Calificación</span>
+                          <span className="text-muted-foreground">Calificación</span>
                         </div>
-                        <span className="text-xl font-bold text-gray-900 dark:text-white">
+                        <span className="text-xl font-bold">
                           {parseFloat(cocinero.calificacion_promedio).toFixed(1)}
                         </span>
                       </div>
@@ -164,10 +174,10 @@ export default function CocineroPerfilPage({ cocineroId, onNavigate }) {
                     {cocinero.total_pedidos !== undefined && (
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <Clock className="w-5 h-5 text-amber-500" />
-                          <span className="text-gray-600 dark:text-gray-400">Pedidos</span>
+                          <Clock className="w-5 h-5 text-primary" />
+                          <span className="text-muted-foreground">Pedidos</span>
                         </div>
-                        <span className="text-xl font-bold text-gray-900 dark:text-white">
+                        <span className="text-xl font-bold">
                           {cocinero.total_pedidos}
                         </span>
                       </div>
@@ -176,24 +186,24 @@ export default function CocineroPerfilPage({ cocineroId, onNavigate }) {
                     {productos && (
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <ShoppingBag className="w-5 h-5 text-amber-500" />
-                          <span className="text-gray-600 dark:text-gray-400">Productos</span>
+                          <ShoppingBag className="w-5 h-5 text-primary" />
+                          <span className="text-muted-foreground">Productos</span>
                         </div>
-                        <span className="text-xl font-bold text-gray-900 dark:text-white">
+                        <span className="text-xl font-bold">
                           {productos.length}
                         </span>
                       </div>
                     )}
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         )}
 
         {/* Productos del Cocinero */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+          <h2 className="text-2xl font-bold mb-6">
             Productos Disponibles
           </h2>
 
@@ -203,12 +213,12 @@ export default function CocineroPerfilPage({ cocineroId, onNavigate }) {
                 const imagenUrl = getProductImageUrl(producto.primera_imagen);
 
                 return (
-                  <div
+                  <Card
                     key={producto.id}
-                    className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300"
+                    className="overflow-hidden hover:shadow-xl transition-all duration-300"
                   >
                     {/* Imagen del producto */}
-                    <div className="relative h-48 bg-gray-200 dark:bg-gray-700">
+                    <div className="relative h-48 bg-muted">
                       {imagenUrl ? (
                         <img
                           src={imagenUrl}
@@ -216,68 +226,68 @@ export default function CocineroPerfilPage({ cocineroId, onNavigate }) {
                           className="w-full h-full object-cover"
                           onError={(e) => {
                             e.target.style.display = 'none';
-                            e.target.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center"><svg class="w-16 h-16 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div>';
+                            e.target.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center"><svg class="w-16 h-16 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div>';
                           }}
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          <ShoppingBag className="w-16 h-16 text-gray-400" />
+                          <ShoppingBag className="w-16 h-16 text-muted-foreground" />
                         </div>
                       )}
 
                       {/* Badge de disponibilidad */}
                       {!producto.disponible && (
                         <div className="absolute top-2 right-2">
-                          <span className="bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow-lg">
+                          <Badge variant="destructive">
                             No disponible
-                          </span>
+                          </Badge>
                         </div>
                       )}
                     </div>
 
-                  {/* Información del producto */}
-                  <div className="p-5">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-                      {producto.nombre}
-                    </h3>
+                    {/* Información del producto */}
+                    <CardContent className="p-5">
+                      <h3 className="text-lg font-bold mb-2">
+                        {producto.nombre}
+                      </h3>
 
-                    {producto.descripcion && (
-                      <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
-                        {producto.descripcion}
-                      </p>
-                    )}
-
-                    {/* Categoría */}
-                    {producto.categoria && (
-                      <span className="inline-block bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 text-xs font-medium px-2.5 py-1 rounded-full mb-3">
-                        {producto.categoria.nombre}
-                      </span>
-                    )}
-
-                    {/* Precio */}
-                    <div className="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
-                      <span className="text-2xl font-bold text-amber-600 dark:text-amber-400">
-                        Bs. {parseFloat(producto.precio).toFixed(2)}
-                      </span>
-
-                      {producto.disponible && (
-                        <button className="bg-amber-500 hover:bg-amber-600 text-white font-medium px-4 py-2 rounded-lg transition-colors">
-                          Pedir
-                        </button>
+                      {producto.descripcion && (
+                        <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                          {producto.descripcion}
+                        </p>
                       )}
-                    </div>
-                  </div>
-                </div>
+
+                      {/* Categoría */}
+                      {producto.categoria && (
+                        <Badge variant="secondary" className="mb-3">
+                          {producto.categoria.nombre}
+                        </Badge>
+                      )}
+
+                      {/* Precio */}
+                      <div className="flex items-center justify-between pt-3 border-t">
+                        <span className="text-2xl font-bold text-primary">
+                          Bs. {parseFloat(producto.precio).toFixed(2)}
+                        </span>
+
+                        {producto.disponible && (
+                          <Button>
+                            Pedir
+                          </Button>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
                 );
               })}
             </div>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-12 text-center">
-              <ShoppingBag className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-600 dark:text-gray-400 text-lg">
+            <Card className="p-12 text-center">
+              <ShoppingBag className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+              <p className="text-muted-foreground text-lg">
                 Este cocinero no tiene productos disponibles en este momento
               </p>
-            </div>
+            </Card>
           )}
         </div>
       </div>

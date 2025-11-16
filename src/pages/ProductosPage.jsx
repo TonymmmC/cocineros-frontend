@@ -1,8 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
-import { Clock, Leaf } from 'lucide-react'
+import { Clock, Leaf, AlertCircle } from 'lucide-react'
 import { productoService } from '../api/services'
 import Loading from '../components/Loading'
 import { getProductImageUrl } from '../utils/images'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 function ProductosPage() {
   const { data, isLoading, error } = useQuery({
@@ -17,18 +21,18 @@ function ProductosPage() {
   if (error) {
     return (
       <div className="container mx-auto px-4 py-12">
-        <div className="max-w-md mx-auto bg-red-50 dark:bg-red-900/20 rounded-2xl shadow-lg p-6 border-2 border-red-200 dark:border-red-800">
-          <h3 className="text-xl font-semibold text-red-700 dark:text-red-400 mb-2">
-            Error al cargar productos
-          </h3>
-          <p className="text-red-600 dark:text-red-300 mb-4">{error.message}</p>
-          <button
+        <Alert variant="destructive" className="max-w-md mx-auto">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Error al cargar productos</AlertTitle>
+          <AlertDescription>{error.message}</AlertDescription>
+          <Button
             onClick={() => window.location.reload()}
-            className="btn-primary"
+            variant="outline"
+            className="mt-4"
           >
             Reintentar
-          </button>
-        </div>
+          </Button>
+        </Alert>
       </div>
     )
   }
@@ -36,14 +40,14 @@ function ProductosPage() {
   const productos = data?.data || []
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          <h1 className="text-4xl font-bold mb-2">
             Productos Disponibles
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-muted-foreground text-lg">
             {productos.length} {productos.length === 1 ? 'producto' : 'productos'} encontrados
           </p>
         </div>
@@ -58,13 +62,13 @@ function ProductosPage() {
         {/* Empty State */}
         {productos.length === 0 && (
           <div className="text-center py-16">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full mb-4">
-              <Clock className="w-10 h-10 text-gray-400 dark:text-gray-500" />
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-muted rounded-full mb-4">
+              <Clock className="w-10 h-10 text-muted-foreground" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+            <h3 className="text-xl font-semibold mb-2">
               No hay productos disponibles
             </h3>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-muted-foreground">
               Vuelve más tarde para ver nuevos productos
             </p>
           </div>
@@ -78,9 +82,9 @@ function ProductCard({ producto }) {
   const imagenUrl = getProductImageUrl(producto.primera_imagen)
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 p-6 group cursor-pointer">
-      {/* Image Placeholder */}
-      <div className="w-full h-48 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/30 dark:to-primary-800/30 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
+    <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer">
+      {/* Image */}
+      <div className="w-full h-48 bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center overflow-hidden">
         {imagenUrl ? (
           <img
             src={imagenUrl}
@@ -88,65 +92,66 @@ function ProductCard({ producto }) {
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
             onError={(e) => {
               e.target.style.display = 'none';
-              e.target.parentElement.innerHTML = '<svg class="w-16 h-16 text-primary-300 dark:text-primary-700" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+              e.target.parentElement.innerHTML = '<svg class="w-16 h-16 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
             }}
           />
         ) : (
-          <Clock className="w-16 h-16 text-primary-300 dark:text-primary-700" />
+          <Clock className="w-16 h-16 text-muted-foreground" />
         )}
       </div>
 
       {/* Content */}
-      <div className="space-y-3">
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-1">
+      <CardHeader>
+        <CardTitle className="line-clamp-1 group-hover:text-primary transition-colors">
           {producto.nombre}
-        </h3>
-        
-        <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2 leading-relaxed">
+        </CardTitle>
+        <CardDescription className="line-clamp-2">
           {producto.descripcion}
-        </p>
-        
+        </CardDescription>
+      </CardHeader>
+
+      <CardContent className="space-y-4">
         {/* Price and Time */}
-        <div className="flex justify-between items-center pt-2 border-t border-gray-100 dark:border-gray-700">
-          <span className="text-2xl font-bold text-primary-600 dark:text-primary-400">
+        <div className="flex justify-between items-center">
+          <span className="text-2xl font-bold text-primary">
             Bs. {producto.precio}
           </span>
-          <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
+          <div className="flex items-center gap-1 text-sm text-muted-foreground">
             <Clock className="w-4 h-4" />
             <span>{producto.tiempo_preparacion_min} min</span>
           </div>
         </div>
-        
+
         {/* Badges */}
         <div className="flex flex-wrap gap-2">
           {producto.categoria?.nombre && (
-            <span className="badge-primary text-xs">
+            <Badge variant="default">
               {producto.categoria.nombre}
-            </span>
+            </Badge>
           )}
-          
+
           {producto.es_vegetariano && (
-            <span className="badge-success text-xs flex items-center gap-1">
+            <Badge variant="secondary" className="gap-1">
               <Leaf className="w-3 h-3" />
               Vegetariano
-            </span>
+            </Badge>
           )}
-          
+
           {producto.es_vegano && (
-            <span className="badge-success text-xs flex items-center gap-1">
+            <Badge variant="secondary" className="gap-1">
               <Leaf className="w-3 h-3" />
               Vegano
-            </span>
+            </Badge>
           )}
-          
+
           {producto.es_sin_gluten && (
-            <span className="badge-warning text-xs">
+            <Badge variant="outline">
               Sin Gluten
-            </span>
+            </Badge>
           )}
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   )
 }
 

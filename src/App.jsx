@@ -5,6 +5,8 @@ import ProductosPage from './pages/ProductosPage'
 import LoginPage from './pages/LoginPage'
 import CocinerosPage from './pages/CocinerosPage'
 import CocineroPerfilPage from './pages/CocineroPerfilPage'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home')
@@ -16,7 +18,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-background">
       <Navbar currentPage={currentPage} onNavigate={handleNavigate} />
 
       {currentPage === 'home' && <HomePage onNavigate={handleNavigate} />}
@@ -36,18 +38,23 @@ function App() {
 
 function RegisterPlaceholder({ onNavigate }) {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-md mx-auto card">
-          <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Registro</h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">Próximamente: Formulario de registro</p>
-          <button
-            onClick={() => onNavigate('login')}
-            className="btn-secondary"
-          >
-            Volver al login
-          </button>
-        </div>
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <Card>
+          <CardHeader>
+            <CardTitle>Registro</CardTitle>
+            <CardDescription>Próximamente: Formulario de registro</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button
+              variant="outline"
+              onClick={() => onNavigate('login')}
+              className="w-full"
+            >
+              Volver al login
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

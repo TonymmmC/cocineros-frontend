@@ -3,111 +3,124 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Fondo crema suave */
+    --background: 30 40% 98%;
+    --foreground: 20 14% 8%;
+
+    /* Cards con tono cálido */
+    --card: 0 0% 100%;
+    --card-foreground: 20 14% 8%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 14% 8%;
+
+    /* Color primario naranja vibrante de restaurante */
+    --primary: 25 95% 53%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secundario en tonos tierra/beige */
+    --secondary: 33 100% 96%;
+    --secondary-foreground: 20 14% 8%;
+
+    /* Muted en tonos cálidos */
+    --muted: 33 100% 96%;
+    --muted-foreground: 20 5% 40%;
+
+    /* Accent naranja claro */
+    --accent: 33 100% 96%;
+    --accent-foreground: 20 14% 8%;
+
+    /* Destructivo rojo intenso */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Bordes sutiles tierra */
+    --border: 33 30% 88%;
+    --input: 33 30% 88%;
+
+    /* Ring naranja */
+    --ring: 25 95% 53%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    /* Fondo oscuro cálido */
+    --background: 20 14% 8%;
+    --foreground: 30 40% 98%;
+
+    /* Cards oscuras con tono cálido */
+    --card: 20 14% 12%;
+    --card-foreground: 30 40% 98%;
+
+    --popover: 20 14% 12%;
+    --popover-foreground: 30 40% 98%;
+
+    /* Primary naranja brillante para dark mode */
+    --primary: 25 95% 58%;
+    --primary-foreground: 20 14% 8%;
+
+    /* Secondary oscuro cálido */
+    --secondary: 20 14% 16%;
+    --secondary-foreground: 30 40% 98%;
+
+    --muted: 20 14% 16%;
+    --muted-foreground: 30 10% 65%;
+
+    --accent: 20 14% 16%;
+    --accent-foreground: 30 40% 98%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 20 14% 20%;
+    --input: 20 14% 20%;
+    --ring: 25 95% 58%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
   body {
-    @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased transition-colors duration-200;
+    @apply bg-background text-foreground antialiased;
+    /* PRUEBA - ESTO DEBE SER NARANJA BRILLANTE */
+    background-color: #FF6B35 !important;
   }
 
   h1 {
-    @apply text-4xl font-bold tracking-tight text-gray-900 dark:text-white;
+    @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
   }
 
   h2 {
-    @apply text-3xl font-semibold tracking-tight text-gray-900 dark:text-white;
+    @apply scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0;
   }
 
   h3 {
-    @apply text-2xl font-semibold text-gray-900 dark:text-white;
+    @apply scroll-m-20 text-2xl font-semibold tracking-tight;
+  }
+
+  h4 {
+    @apply scroll-m-20 text-xl font-semibold tracking-tight;
   }
 
   p {
-    @apply text-gray-700 dark:text-gray-300 leading-relaxed;
+    @apply leading-7 [&:not(:first-child)]:mt-6;
   }
 }
 
-@layer components {
-  .btn-primary {
-    @apply bg-primary-600 hover:bg-primary-700 active:bg-primary-800 
-           text-white font-semibold py-3 px-6 rounded-xl 
-           transition-all duration-200 shadow-md hover:shadow-lg 
-           transform hover:-translate-y-0.5 active:translate-y-0;
-  }
-
-  .btn-secondary {
-    @apply bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600
-           text-primary-700 dark:text-primary-400 font-semibold py-3 px-6 rounded-xl 
-           border-2 border-primary-600 dark:border-primary-500 transition-all duration-200 
-           shadow-sm hover:shadow-md;
-  }
-
-  .card {
-    @apply bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 
-           hover:shadow-xl transition-all duration-300 
-           border border-gray-100 dark:border-gray-700;
-  }
-
-  .card-hover {
-    @apply card hover:scale-105 hover:-translate-y-1 cursor-pointer;
-  }
-
-  .input {
-    @apply w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl 
-           bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100
-           focus:ring-4 focus:ring-primary-100 dark:focus:ring-primary-900 focus:border-primary-500 
-           transition-all duration-200 outline-none
-           placeholder:text-gray-400 dark:placeholder:text-gray-500;
-  }
-
-  .badge {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
-  }
-
-  .badge-primary {
-    @apply badge bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200;
-  }
-
-  .badge-success {
-    @apply badge bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200;
-  }
-
-  .badge-warning {
-    @apply badge bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200;
-  }
-
-  .badge-gray {
-    @apply badge bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200;
-  }
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-
-  .animate-fadeIn {
-    animation: fadeIn 0.5s ease-in-out;
-  }
-
-  .animate-slideUp {
-    animation: slideUp 0.4s ease-out;
-  }
-
-  .animate-scaleIn {
-    animation: scaleIn 0.3s ease-out;
-  }
-}
-
-/* Scrollbar personalizado */
+/* Scrollbar personalizado con tonos cálidos */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-gray-100 dark:bg-gray-800;
+  @apply bg-muted;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 dark:bg-gray-600 rounded-full hover:bg-gray-400 dark:hover:bg-gray-500;
+  @apply bg-primary/30 rounded-full hover:bg-primary/50;
 }
 
 /* Animaciones smooth para transiciones de página */
@@ -117,8 +130,21 @@
   }
 }
 
-/* REFACTOR SUGGESTIONS:
- * 1. Considerar agregar más variantes de badges (info, danger)
- * 2. Implementar skeleton loaders como utility classes
- * 3. Agregar transiciones más suaves entre temas si se nota parpadeo
- */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* PRUEBA CRÍTICA - ESTO FUERZA EL NARANJA */
+body {
+  background-color: #FF6B35 !important;
+}
+
+html {
+  background-color: #FF6B35 !important;
+}
+
+#root {
+  background-color: #FF6B35 !important;
+}
