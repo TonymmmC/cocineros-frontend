@@ -84,6 +84,8 @@
 
   body {
     @apply bg-background text-foreground antialiased;
+    /* PRUEBA - ESTO DEBE SER NARANJA BRILLANTE */
+    background-color: #FF6B35 !important;
   }
 
   h1 {
