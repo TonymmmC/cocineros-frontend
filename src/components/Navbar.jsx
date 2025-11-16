@@ -1,6 +1,6 @@
 import { ShoppingBag, Home, ChefHat, Menu, X, Sun, Moon } from 'lucide-react'
 import { useState } from 'react'
-import { useTheme } from '../hooks/useTheme'
+import { useTheme } from '@/context/ThemeContext'
 
 function Navbar({ currentPage, onNavigate }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react'
-import { useAuth } from '../hooks/Auth'
+import { useAuth } from '@/context/AuthContext'
 import Button from '../components/Button'
 
 function LoginPage({ onNavigate }) {
